@@ -23,15 +23,16 @@ class TwitterRequest {
    }
 
    async twitterRequest() {
-
-      let res;
-
-      twitter.get(`https://api.twitter.com/1.1/trends/place.json?id=${this.woeid}`,
-         (err, data, response) => {
-            if (!err) res = this.dataProcessing(data);
-         });
-
-      return res;
+      return new Promise((pSuc, pErr) => {
+         twitter.get(`https://api.twitter.com/1.1/trends/place.json?id=${this.woeid}`,
+            (err, data, response) => {
+               if (!err){ 
+                  pSuc(this.dataProcessing(data));
+               } else{
+                  pErr(err);
+               }
+            });
+      });
    }
 }
 
